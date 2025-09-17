@@ -4,20 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="019696e3-38c5-45ef-9a37-8af64e6a16bd" name="更改" comment="v1">
-      <change afterPath="$PROJECT_DIR$/docker-compose-24.04.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/consts.go" beforeDir="false" afterPath="$PROJECT_DIR$/generator/consts.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/generator/generator.go" beforeDir="false" afterPath="$PROJECT_DIR$/generator/generator.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.go" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/modules/storage-manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/modules/storage-manager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.go" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.go" afterDir="false" />
-    </list>
+    <list default="true" id="019696e3-38c5-45ef-9a37-8af64e6a16bd" name="更改" comment="Update documentation description" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -176,9 +163,22 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="v1" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/main'&#10;&#10;# Conflicts:&#10;#&#9;Dockerfile&#10;#&#9;Makefile&#10;#&#9;README.md&#10;#&#9;api/handler.go&#10;#&#9;docker-compose.yml&#10;#&#9;generator/consts.go&#10;#&#9;generator/generator.go&#10;#&#9;main.go&#10;#&#9;server/server.go&#10;#&#9;static/js/modules/storage-manager.js&#10;#&#9;utils/utils.go" />
+    <MESSAGE value="Update documentation description" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update documentation description" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
