@@ -62,7 +62,7 @@ const (
 
 	GrubCdromMarker   = "cdrom"
 	GrubReplaceMarker = "---"
-	GrubInsertText    = "ds=nocloud\\;s=/cdrom/ ---"
+	GrubInsertText    = "autoinstall ds=nocloud\\;s=/cdrom/"
 	GrubFilePerm      = 0644
 
 	DebFilePattern = "*.deb"

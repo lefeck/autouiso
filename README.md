@@ -5,37 +5,15 @@ It supports **cloud-init** automation, real-time validation, and visual configur
 
 ## Features
 
-###  Configuration Management
-- **Interactive Web Builder** — Create autoinstall configs visually
-- **YAML Import/Export** — Seamless configuration portability
-- **Predefined Templates** — Ready-to-use setups for common scenarios
-- **Real-time Validation** — Catch errors before ISO build
-- **Preview Mode** — Review generated `user-data` instantly
-
-### ISO Generation
-- Support for **local ISOs** or direct download from Ubuntu mirrors
-- Auto-fetch latest Ubuntu Server releases (**20.04 / 22.04 / 24.04**)
-- **GPG Verification** for enhanced security (optional)
-- Integrate **custom packages** into ISO
-- **HWE Kernel** support for modern hardware
-- Auto-update **MD5 checksums** for integrity
-
-### Web Interface & API
-- Full-featured **RESTful API**
-- **Live build progress** with detailed logs
-- Upload and process custom ISO files
-- **Swagger-based API docs**
-- Manage **parallel builds**
-- Direct ISO download via web interface
-
-### Cloud-Init Integration
-- Generate complete **cloud-init configurations**
-- Advanced **networking** (static IP, bridges, bonding)
-- **User & SSH key management**
-- Flexible **storage layouts** and partitioning
-- Define extra **packages** to install
-- Run custom **post-install scripts**
-
+- [ ] Automatically encrypt plaintext passwords
+- [x] Import ISO files (upload custom ISO or download directly from the internet)
+- [x] Generate cloud-init configurations
+- [x] Validate user-data format before ISO build
+- [x] Advanced networking and storage layouts
+- [x] User and SSH key management
+- [x] HWE kernel support and ISO integrity verification
+- [x] Add support for downloading and embedding installation packages into the the ISO
+- [ ] Add support for building local applications directly into the ISO
 
 ![dashboard](./dashboard.png)
 
@@ -82,21 +60,26 @@ The Makefile provides several targets:
 
 ### Docker images
 
+**Suggestion:**
+
+* The version of your Docker image must match the version of the image you want to build; otherwise, issues such as installation failures may occur.
+
 Docker images are available on [ACR](https://cr.console.aliyun.com) or [Docker Hub](https://hub.docker.com/).
 
 You can launch a Autouiso container for trying it out with
 
 ```
 # autouiso ubuntu 22.04
-docker run --rm -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu22.04
+docker run -d -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu22.04
 # or
-docker run --rm -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu22.04
+docker run -d -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu22.04
 
 # autouiso ubuntu 24.04
-docker run --rm -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu24.04
+docker run -d -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu24.04
 # or
-docker run --rm -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu24.04
+docker run -d -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu24.04
 ```
+
 
 Access:
 
