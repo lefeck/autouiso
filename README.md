@@ -1,48 +1,43 @@
-# AutouISO
+<h1 align="center">AutouISO</h1>
 
 **AutouISO** is a **web-based Ubuntu Autoinstall ISO generator** built with **Go + Gin**.  
 It supports **cloud-init** automation, real-time validation, and visual configuration of system parameters.
 
----
-
 ## Features
 
-### Configuration Management
-
-- Web-based **interactive configuration builder**
-- **YAML import/export** support
-- Pre-built **installation templates**
-- **Real-time validation** of cloud-init configs
-- **Preview mode** for generated `user-data`
+###  Configuration Management
+- **Interactive Web Builder** — Create autoinstall configs visually
+- **YAML Import/Export** — Seamless configuration portability
+- **Predefined Templates** — Ready-to-use setups for common scenarios
+- **Real-time Validation** — Catch errors before ISO build
+- **Preview Mode** — Review generated `user-data` instantly
 
 ### ISO Generation
+- Support for **local ISOs** or direct download from Ubuntu mirrors
+- Auto-fetch latest Ubuntu Server releases (**20.04 / 22.04 / 24.04**)
+- **GPG Verification** for enhanced security (optional)
+- Integrate **custom packages** into ISO
+- **HWE Kernel** support for modern hardware
+- Auto-update **MD5 checksums** for integrity
 
-- Use **local ISO** or download from Ubuntu mirrors
-- Automatic fetching of latest **20.04 / 22.04 / 24.04**
-- Optional **GPG verification**
-- Add **custom packages** to ISO
-- **HWE kernel** support for new hardware
-- Maintain **MD5 checksum** integrity
-
-### Web & API
-
-- Full **RESTful API**
-- **Progress tracking** with detailed logs
-- Upload custom ISO files
-- **Swagger documentation**
-- Manage multiple concurrent builds
-- Direct **ISO download** from web UI
+### Web Interface & API
+- Full-featured **RESTful API**
+- **Live build progress** with detailed logs
+- Upload and process custom ISO files
+- **Swagger-based API docs**
+- Manage **parallel builds**
+- Direct ISO download via web interface
 
 ### Cloud-Init Integration
+- Generate complete **cloud-init configurations**
+- Advanced **networking** (static IP, bridges, bonding)
+- **User & SSH key management**
+- Flexible **storage layouts** and partitioning
+- Define extra **packages** to install
+- Run custom **post-install scripts**
 
-- Complete **cloud-init** support
-- Advanced **networking** (static IPs, bridges, bonds)
-- **User management** (SSH keys, authentication)
-- **Storage configuration** with custom partitions
-- Install extra **packages**
-- Run **post-install scripts**
 
----
+![dashboard](./dashboard.png)
 
 ## Install
 
@@ -152,7 +147,6 @@ To check the health of your Autouiso instance, use the following command:
 curl -sf http://localhost:8080/health && echo OK || echo FAIL
 ```
 
----
 
 ### Supported Platforms
 
@@ -162,24 +156,19 @@ Considering that this project is designed for Ubuntu:
 
 - In a Docker environment, it can run on any operating system.
 
----
-
-## FAQ
+### FAQ
 
 - **Blank UI / 404?** → Check `STATIC_DIR` path
 - **Health check fails?** → Inspect logs: `docker logs autouiso`
 - **ISO build fails?** → Fix config validation errors, then check network
 
----
 
 ### Contribution
 
 Contributions via Issues & PRs are welcome
 
----
 
-## License
+### License
 
 Licensed under the **MIT License** – see [LICENSE](LICENSE).
 
----

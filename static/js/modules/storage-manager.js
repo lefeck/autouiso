@@ -24,7 +24,8 @@ function initStorageConfigs() {
     addStorageConfig('partition', 'boot-part', false, '', 'superblock', '', 2, 1, 'G', '', '', '', '', 'disk0');
     addStorageConfig('format', 'boot-fs', false, '', '', '', 0, 0, '', '', '', '', '', 'boot-part');
     addStorageConfig('partition', 'pv-part', false, '', 'superblock', '', 3, -1, '', '', '', '', '', 'disk0');
-    addStorageConfig('lvm_volgroup', 'vg0', false, '', '', '', 0, 0, '', '', 'ubuntu-vg', '', '', 'pv-part');
+    addStorageConfig('dm_crypt', 'dm_crypt-0', false, '', 'superblock', '', 0, 0, '', '', 'crypto', '', '', 'pv-part');
+	addStorageConfig('lvm_volgroup', 'vg0', false, '', '', '', 0, 0, '', '', 'ubuntu-vg', '', '', 'dm_crypt-0');
     addStorageConfig('lvm_partition', 'lv-swap', false, '', 'superblock', '', 0, 1, 'G', 'swap', 'ubuntu-swap', 'vg0', '', '');
     addStorageConfig('format', 'fs-swap', false, '', '', '', 0, 0, '', '', '', '', '', 'lv-swap');
     addStorageConfig('lvm_partition', 'lv-root', false, '', 'superblock', '', 0, -1, '', '', 'ubuntu-lv', 'vg0', '', '');
@@ -32,8 +33,6 @@ function initStorageConfigs() {
     addStorageConfig('mount', 'mount-root', false, '', '', '', 0, 0, '', '', '', '/', '/', 'fs-root');
     addStorageConfig('mount', 'mount-boot', false, '', '', '', 0, 0, '', '', '', '/boot', '/boot', 'boot-fs');
     addStorageConfig('mount', 'mount-swap', false, '', '', '', 0, 0, '', '', '', '', '/swap', 'fs-swap');
-    // DM Crypt: place name in name parameter position, device in final device parameter position
-    addStorageConfig('dm_crypt', 'dm_crypt-0', false, '', 'superblock', '', 0, 0, '', '', 'crypto', '', '', 'lv-root');
     console.log('Default storage configs added successfully');
 }
 
@@ -125,6 +124,14 @@ function addStorageConfig(type = 'disk', id = '', grubDevice = false, ptable = '
 
     // Add input/blur events for required fields, highlight empty values with input-error
     try {
+        // Ensure fs-swap defaults to swap filesystem when type is format
+        if (type === 'format' && id === 'fs-swap') {
+            const fsTypeSelect = configDiv.querySelector('.storage-fstype-input');
+            if (fsTypeSelect) {
+                fsTypeSelect.value = 'swap';
+            }
+        }
+
         const requiredInputs = configDiv.querySelectorAll('input[required], select[required], .storage-ptable-input, .storage-grub-input, .disk-match-value');
         requiredInputs.forEach(function(el){
             el.addEventListener('input', function(){ this.classList.remove('input-error'); });
@@ -343,7 +350,7 @@ function getStorageTypeSpecificFields(type, ptable, wipe, match, number, display
                     </div>
                     <div class="form-group">
                         <label>Devices <span class="hint-icon" data-tooltip="Physical volumes list, comma separated (e.g. pv-part)">?</span></label>
-                        <input type="text" class="storage-devices-input" value="${device}" required>
+                        <input type="text" class="storage-devices-input" value="${device || 'dm_crypt-0'}" required>
                     </div>
                 </div>
                 <!-- Optional Fields -->
@@ -401,8 +408,8 @@ function getStorageTypeSpecificFields(type, ptable, wipe, match, number, display
                 <!-- Required Fields -->
                 <div class="form-row">
                     <div class="form-group">
-                        <label>Volume <span class="hint-icon" data-tooltip="Volume to encrypt (e.g. lv-root)">?</span></label>
-                        <input type="text" class="storage-volume-input" value="${device}" required>
+                        <label>Volume <span class="hint-icon" data-tooltip="The volume key gives the volume that is to be encrypted (e.g. pv-part)">?</span></label>
+                        <input type="text" class="storage-volume-input" value="${device || 'pv-part'}" required>
                     </div>
                     <div class="form-group">
                         <label>DM Name <span class="hint-icon" data-tooltip="Device mapper name (e.g. crypto)">?</span></label>
