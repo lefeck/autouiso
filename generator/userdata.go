@@ -6,6 +6,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/lefeck/autouiso/config"
+	"github.com/lefeck/autouiso/utils"
 )
 
 // UserDataGenerator generates cloud-init user-data content.
@@ -21,6 +22,15 @@ func (gen *UserDataGenerator) GenerateFromConfig(cfg *config.Config) ([]byte, er
 	// Validate configuration
 	if err := gen.validateConfig(cfg); err != nil {
 		return nil, fmt.Errorf("config validation failed: %v", err)
+	}
+
+	// Ensure identity.password is hashed with SHA-512 crypt ($6$...)
+	if cfg.Autoinstall.Identity.Password != "" && !utils.IsSHA512Crypt(cfg.Autoinstall.Identity.Password) {
+		hashed, err := utils.HashSHA512Crypt(cfg.Autoinstall.Identity.Password)
+		if err != nil {
+			return nil, fmt.Errorf("failed to hash password: %v", err)
+		}
+		cfg.Autoinstall.Identity.Password = hashed
 	}
 
 	// Generate user-data YAML content

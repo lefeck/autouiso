@@ -5,7 +5,7 @@ It supports **cloud-init** automation, real-time validation, and visual configur
 
 ## Features
 
-- [ ] Automatically encrypt plaintext passwords
+- [x] Automatically encrypt plaintext passwords
 - [x] Import ISO files (upload custom ISO or download directly from the internet)
 - [x] Generate cloud-init configurations
 - [x] Validate user-data format before ISO build
@@ -15,7 +15,6 @@ It supports **cloud-init** automation, real-time validation, and visual configur
 - [x] Add support for downloading and embedding installation packages into the the ISO
 - [ ] Add support for building local applications directly into the ISO
 
-![dashboard](./dashboard.png)
 
 ## Install
 

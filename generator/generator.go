@@ -717,115 +717,81 @@ func touchFile(path string) error {
 	return f.Close()
 }
 
-//func modifyGrubConfig(path string) error {
-//	// Check if file exists
-//	if _, err := os.Stat(path); os.IsNotExist(err) {
-//		return nil // Skip if file does not exist
-//	} else if err != nil {
-//		return fmt.Errorf("failed to stat file %s: %w", filepath.Base(path), err)
-//	}
-//
-//	// Read file content
-//	content, err := os.ReadFile(path)
-//	if err != nil {
-//		return fmt.Errorf("failed to read file %s: %w", filepath.Base(path), err)
-//	}
-//
-//	// Split content into lines
-//	lines := strings.Split(string(content), "\n")
-//	modified := false
-//
-//	for i, line := range lines {
-//		// Trim whitespace from the beginning to handle leading spaces
-//		trimmedLine := strings.TrimLeft(line, " \t")
-//		if trimmedLine == "" {
-//			continue
-//		}
-//
-//		// Handle "append" or "linux" lines ending with "---"
-//		if (strings.HasPrefix(trimmedLine, "append") || strings.HasPrefix(trimmedLine, "linux")) && strings.HasSuffix(line, "---") {
-//			// Check if autoinstall is already present
-//			if !strings.Contains(line, "autoinstall") {
-//				// Remove trailing "---" temporarily
-//				baseLine := strings.TrimSuffix(line, "---")
-//				// Find the position after "quiet"
-//				parts := strings.Fields(baseLine) // Split into words
-//				var newParts []string
-//				quietFound := false
-//
-//				for _, part := range parts {
-//					newParts = append(newParts, part)
-//					if part == "quiet" {
-//						quietFound = true
-//						// Insert autoinstall params after "quiet"
-//						newParts = append(newParts, GrubInsertText)
-//					}
-//				}
-//
-//				// If "quiet" is not found, append at the end
-//				if !quietFound && len(parts) > 0 {
-//					newParts = append(newParts, GrubInsertText)
-//				}
-//
-//				// Reconstruct the line with "---"
-//				newLine := strings.Join(newParts, " ") + " ---"
-//				lines[i] = newLine
-//				modified = true
-//			}
-//		}
-//	}
-//
-//	// If no modification, return early
-//	if !modified {
-//		return nil
-//	}
-//
-//	// Join lines back and write to file
-//	newContent := []byte(strings.Join(lines, "\n"))
-//	if err := os.WriteFile(path, newContent, GrubFilePerm); err != nil {
-//		return fmt.Errorf("failed to write file %s: %w", filepath.Base(path), err)
-//	}
-//
-//	return nil
-//}
-
-func patchLine(line string) string {
-	trim := strings.TrimSpace(line)
-
-	// 只处理包含 linux/append/kernel 且包含 quiet 和 --- 的行
-	if !(strings.Contains(trim, "linux") || strings.Contains(trim, "append")) {
-		return line
-	}
-	if !strings.Contains(trim, "quiet") || !strings.Contains(trim, "---") {
-		return line
+func modifyGrubConfig(path string) error {
+	// Check if file exists
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return nil // Skip if file does not exist
+	} else if err != nil {
+		return fmt.Errorf("failed to stat file %s: %w", filepath.Base(path), err)
 	}
 
-	// 已经包含 autoinstall，就不处理
-	if strings.Contains(trim, "autoinstall") {
-		return line
+	// Read file content
+	content, err := os.ReadFile(path)
+	if err != nil {
+		return fmt.Errorf("failed to read file %s: %w", filepath.Base(path), err)
 	}
 
-	// 插入到 quiet 后面
-	parts := strings.Fields(line)
-	for i, p := range parts {
-		if p == "quiet" {
-			parts[i] = p + " " + GrubInsertText
-			break
+	// Split content into lines
+	lines := strings.Split(string(content), "\n")
+	modified := false
+
+	for i, line := range lines {
+		if line == "" {
+			continue
+		}
+
+		// Preserve original leading indentation (spaces/tabs)
+		leadingTrimmed := strings.TrimLeft(line, " \t")
+		indent := line[:len(line)-len(leadingTrimmed)]
+
+		// Normalize matcher line without altering original content
+		trimmedLine := leadingTrimmed
+
+		// Handle only "append" or "linux" lines ending with "---" (skip linux16)
+		if (strings.HasPrefix(trimmedLine, "append") || strings.HasPrefix(trimmedLine, "linux")) && strings.HasSuffix(strings.TrimRight(line, " \t"), "---") {
+			// Check if autoinstall is already present
+			if !strings.Contains(line, "autoinstall") {
+				// Remove trailing "---" temporarily
+				baseLine := strings.TrimSpace(strings.TrimSuffix(strings.TrimRight(line, " \t"), "---"))
+				// Find the position after "quiet"
+				parts := strings.Fields(baseLine) // Split into words (collapses inner spaces)
+				var newParts []string
+				quietFound := false
+
+				for _, part := range parts {
+					newParts = append(newParts, part)
+					if part == "quiet" {
+						quietFound = true
+						// Insert autoinstall params after "quiet"
+						newParts = append(newParts, GrubInsertText)
+					}
+				}
+
+				// If "quiet" is not found, append at the end
+				if !quietFound && len(parts) > 0 {
+					newParts = append(newParts, GrubInsertText)
+				}
+
+				// Reconstruct the line with "---"
+				newLine := indent + strings.Join(newParts, " ") + " ---"
+				lines[i] = newLine
+				modified = true
+			}
 		}
 	}
-	return strings.Join(parts, " ")
-}
 
-func modifyGrubConfig(path string) error {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return err
+	// If no modification, return early
+	if !modified {
+		return nil
 	}
-	lines := strings.Split(string(data), "\n")
-	for i, line := range lines {
-		lines[i] = patchLine(line)
+
+	// Join lines back and write to file
+	newContent := []byte(strings.Join(lines, "\n"))
+	if err := os.WriteFile(path, newContent, GrubFilePerm); err != nil {
+		return fmt.Errorf("failed to write file %s: %w", filepath.Base(path), err)
 	}
-	return os.WriteFile(path, []byte(strings.Join(lines, "\n")), GrubFilePerm)
+
+	return nil
 }
 
 // downloadPackage is the main entry for downloading a package and its dependencies

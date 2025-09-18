@@ -42,29 +42,51 @@ function generateUserData() {
         // Get config object
         const config = window.ConfigManager.buildConfig();
 
-        // Convert to YAML
-        const yamlContent = convertToYAML(config);
+        // Prefer backend generation to ensure password hashing and schema
+        fetch(`${API_BASE}/userdata/generate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ config })
+        })
+        .then(res => res.json())
+        .then(result => {
+            const userdataResult = document.getElementById('userdataResult');
+            const userdataStatus = document.getElementById('userdataStatus');
+            const userDataContent = document.getElementById('userDataContent');
 
-        // Display generated user-data
-        const userdataResult = document.getElementById('userdataResult');
-        const userdataStatus = document.getElementById('userdataStatus');
-        const userDataContent = document.getElementById('userDataContent');
-
-        if (userdataResult) {
-            // Show formatted YAML
-            userdataResult.innerHTML = `<pre>${yamlContent}</pre>`;
-            userdataResult.style.display = 'block';
-
-            // Update status
-            if (userdataStatus) {
-                userdataStatus.innerHTML = '<div class="status-success">User-data generated successfully!</div>';
+            if (result && result.success && (result.userData || result['user-data'])) {
+                const yamlContent = result.userData || result['user-data'];
+                if (userdataResult) {
+                    userdataResult.innerHTML = `<pre>${yamlContent}</pre>`;
+                    userdataResult.style.display = 'block';
+                }
+                if (userdataStatus) {
+                    userdataStatus.innerHTML = '<div class="status-success">User-data generated successfully!</div>';
+                }
+                if (userDataContent) {
+                    userDataContent.value = yamlContent;
+                }
+            } else {
+                throw new Error(result && result.error ? result.error : 'Failed to generate user-data');
             }
-
-            // Also update the ISO generation user-data input
+        })
+        .catch(err => {
+            console.warn('Backend generation failed, fallback to local:', err.message);
+            const yamlContent = convertToYAML(config);
+            const userdataResult = document.getElementById('userdataResult');
+            const userdataStatus = document.getElementById('userdataStatus');
+            const userDataContent = document.getElementById('userDataContent');
+            if (userdataResult) {
+                userdataResult.innerHTML = `<pre>${yamlContent}</pre>`;
+                userdataResult.style.display = 'block';
+            }
+            if (userdataStatus) {
+                userdataStatus.innerHTML = `<div class="status-success">User-data generated locally</div>`;
+            }
             if (userDataContent) {
                 userDataContent.value = yamlContent;
             }
-        }
+        });
     } catch (error) {
         console.error('User-data generation failed:', error);
         const userdataStatus = document.getElementById('userdataStatus');
