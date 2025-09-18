@@ -1,0 +1,10 @@
+
+
+1. 在 APT Configuration 选项卡中, 有个GeoIP 这个默认是true, 但是改成false 之后, 生成的配置文件看还是true, 不符合逻辑
+
+2. 还有在 SSH Configuration 选项卡中, 也有同样的问题, 这2个字段Allow Password Login 和 Install SSH Server
+
+
+动态添加配置参数到user-data中,
+
+上传本地应用构构建本地应用到镜像内打包完成一键安装

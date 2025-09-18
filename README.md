@@ -5,7 +5,7 @@ It supports **cloud-init** automation, real-time validation, and visual configur
 
 ## Features
 
-- [ ] Automatically encrypt plaintext passwords
+- [x] Automatically encrypt plaintext passwords
 - [x] Import ISO files (upload custom ISO or download directly from the internet)
 - [x] Generate cloud-init configurations
 - [x] Validate user-data format before ISO build
@@ -15,7 +15,6 @@ It supports **cloud-init** automation, real-time validation, and visual configur
 - [x] Add support for downloading and embedding installation packages into the the ISO
 - [ ] Add support for building local applications directly into the ISO
 
-![dashboard](./dashboard.png)
 
 ## Install
 
@@ -69,15 +68,21 @@ Docker images are available on [ACR](https://cr.console.aliyun.com) or [Docker H
 You can launch a Autouiso container for trying it out with
 
 ```
-# autouiso ubuntu 22.04
-docker run -d -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu22.04
+# autouiso ubuntu 20.04
+docker run -d -p 8080:8080 --name autouiso-20.04  jetfuls/autouiso:1.0-ubuntu20.04
 # or
-docker run -d -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu22.04
+docker run -d -p 8080:8080 --name autouiso-20.04  crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu20.04
+
+# autouiso ubuntu 22.04
+docker run -d -p 8080:8080 --name autouiso-22.04  jetfuls/autouiso:1.0-ubuntu22.04
+# or
+docker run -d -p 8080:8080 --name autouiso-22.04  crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu22.04
+
 
 # autouiso ubuntu 24.04
-docker run -d -p 8080:8080 --name autouiso jetfuls/autouiso:1.0-ubuntu24.04
+docker run -d -p 8080:8080 --name autouiso-24.04  jetfuls/autouiso:1.0-ubuntu24.04
 # or
-docker run -d -p 8080:8080 --name autouiso crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu24.04
+docker run -d -p 8080:8080 --name autouiso-24.04  crpi-g7nxbvns4i9rnvaf.cn-hangzhou.personal.cr.aliyuncs.com/jetfuls/autouiso:1.0-ubuntu24.04
 ```
 
 

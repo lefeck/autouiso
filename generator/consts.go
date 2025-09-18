@@ -60,10 +60,11 @@ const (
 	DefaultDirPerm     = 0755                     // default directory permission
 	ScriptFileName     = "install-pkgs.sh"
 
-	GrubCdromMarker   = "cdrom"
-	GrubReplaceMarker = "---"
-	GrubInsertText    = "autoinstall ds=nocloud\\;s=/cdrom/"
-	GrubFilePerm      = 0644
+	GrubCdromMarker    = "cdrom"
+	GrubReplaceMarker  = "---"
+	GrubInsertText     = "autoinstall ds=nocloud\\;s=/cdrom/"
+	ISOLinuxInsertText = "autoinstall ds=nocloud;s=/cdrom/"
+	GrubFilePerm       = 0644
 
 	DebFilePattern = "*.deb"
 )

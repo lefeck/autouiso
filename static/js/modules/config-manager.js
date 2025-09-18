@@ -745,7 +745,7 @@ function buildConfig() {
                 primary: buildAptPrimaryRepos()
             },
             drivers: {
-                install: document.getElementById('drivers')?.value === 'false' || false
+                install: document.getElementById('drivers')?.value === 'true' || false
             },
             identity: {
                 hostname: document.getElementById('hostname')?.value || 'ubuntu-server',
